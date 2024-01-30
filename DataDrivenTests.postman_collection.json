@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "5f51c00a-033d-4af4-8d29-f7c46a4a283b",
+		"name": "DataDrivenTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16398300"
+	},
+	"item": [
+		{
+			"name": "Test Data",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let companies = pm.environment.get(\"companies\");\r",
+							"console.log(companies)\r",
+							"\r",
+							"if (!companies || companies.length<=0) {\r",
+							"    companies = [\"Gooooooogle\", \"Yahoo!\", \"Facebook\", \"Amazon\"];\r",
+							"    // pm.environment.set(\"companies\", companies);\r",
+							"}\r",
+							"\r",
+							"console.log(companies)\r",
+							"\r",
+							"\r",
+							"var currentCompany = companies.shift();\r",
+							"\r",
+							"pm.environment.set(\"company\", currentCompany);\r",
+							"pm.environment.set(\"companies\", companies);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let companies = pm.environment.get(\"companies\");\r",
+							"\r",
+							"\r",
+							"if (companies.length>0) {\r",
+							"    postman.setNextRequest(\"Test Data\");\r",
+							"}\r",
+							"else {\r",
+							"    postman.setNextRequest(null)\r",
+							"}\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"{{company}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://httpbin.org/post",
+					"protocol": "https",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
